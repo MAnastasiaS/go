@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поле ввода ссылки</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9727282;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px #be1616;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        input[type="text"]:focus {
+            border-color: #bd0a0a;
+            outline: none;
+        }
+        .submit-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #bd0a0a;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #a60000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Введите ссылку</h1>
+        <form id="linkForm" action="http://localhost:8081/link" method="POST">
+            <input type="text" name="url" placeholder="https://example.com" required />
+            <button type="submit" class="submit-btn">Отправить</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('linkForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Отменяем стандартное поведение формы
+
+            const url = this.url.value; // Получаем значение поля ввода
+
+            // Отправка данных на бэкэнд
+            fetch('YOUR_BACKEND_URL', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url: url })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // Обработка ответа от сервера
+                }
+                throw new Error('Ошибка сети');
+            })
+            .then(data => {
+                console.log('Успех:', data); // Обработка успешного ответа
+            })
+            .catch((error) => {
+                console.error('Ошибка:', error); // Обработка ошибок
+            });
+        });
+    </script>
+</body>
+</html>
